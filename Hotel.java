@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Hotel {
+
     private String name;
     private List<Room> rooms = new ArrayList<>();
     private List<Reservation> reservations = new ArrayList<>();
@@ -9,14 +10,34 @@ public class Hotel {
         this.name = name;
     }
 
-    public void addRoom(Room r) { rooms.add(r); }
-    public String getName() { return name; }
+    public Reservation createReservation(
+            int resNum,
+            String date,
+            String start,
+            String end,
+            ReserverPayer rp
+    ) {
+        Reservation res = new Reservation(resNum, date, start, end, rp);
+        res.create();
+        reservations.add(res);
+        System.out.println("Hotel " + name + " added Reservation #" + resNum);
+        return res;
+    }
 
-    // Figure 16 & 18 logic
-    public Reservation createReservation(int resNum, String date, String start, String end, ReserverPayer rp) {
-        Reservation newRes = new Reservation(resNum, date, start, end, rp);
-        reservations.add(newRes);
-        System.out.println("Reservation " + resNum + " created in " + this.name);
-        return newRes;
+    public boolean available(RoomType type) {
+        for (Room r : rooms) {
+            if (r.isAvailable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void addRoom(Room r) {
+        rooms.add(r);
     }
 }

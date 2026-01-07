@@ -1,15 +1,19 @@
 public class Guest {
-    private String id; // Figure 7 aur 14 ke mutabiq
-    private String name; 
-    private String addressDetails; 
 
-    public Guest(String id, String name, String addressDetails) {
-        this.id = id;
+    protected String name;
+    protected String addressDetails;
+
+    public void create(String name, String addressDetails) {
         this.name = name;
         this.addressDetails = addressDetails;
+        System.out.println("Guest profile created for: " + name);
     }
 
-    public String getName() { return name; }
-    public String getId() { return id; }
-    public String getAddressDetails() { return addressDetails; }
+    public String getName() {
+        return name;
+    }
+
+    public String getAddressDetails() {
+        return addressDetails;
+    }
 }

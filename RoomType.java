@@ -1,6 +1,7 @@
 public class RoomType {
-    private String kind; // e.g., "family", "double"
-    private double cost; // Figure 6
+
+    private String kind;
+    private double cost;
 
     public RoomType(String kind, double cost) {
         this.kind = kind;
@@ -11,7 +12,6 @@ public class RoomType {
         return kind;
     }
 
-    // Yeh method miss tha, isse add karein:
     public double getCost() {
         return cost;
     }
