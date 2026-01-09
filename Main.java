@@ -1,50 +1,59 @@
 public class Main {
-    public static void main(String[] args) {
-        try {
-            System.out.println("=== HOTEL MANAGEMENT SYSTEM STARTING ===\n");
+    public static void main(String[] args) throws Exception {
 
-            // 1. Setup Hotel & Chain (Fig 14)
-            HotelChain chain = new HotelChain();
-            Hotel continental = new Hotel("The Continental");
-            chain.addHotel(continental);
+        System.out.println("========================================================");
+        System.out.println("\n ============ HOTEL MANAGEMENT SYSTEM ============ \n");
+        System.out.println("========================================================\n");
 
-            // 2. Room & RoomType Setup (Fig 6, 7)
-            RoomType familyType = new RoomType("Family Suite", 500.0);
-            Room room101 = new Room(101);
-            continental.addRoom(room101);
+        System.out.println("--- 1. Testing RoomType Class ---");
+        RoomType suite = new RoomType("Deluxe Suite", 450.0);
+        System.out.println("Type: " + suite.getKind() + ", Cost: " + suite.getCost());
 
-            // 3. Reserver/Guest Setup (Fig 8 - Mario Bakewell)
-            ReserverPayer mario = new ReserverPayer("G-101", "Mario Bakewell", "123 Street, London", "VISA-4422-xxxx");
+        System.out.println("\n--- 2. Testing Room Class ---");
+        Room room101 = new Room(101);
+        System.out.println("Room Number: " + room101.getNumber());
+        System.out.println("Is Available Initial: " + room101.isAvailable());
+        room101.createGuest("G-1", "Ali", "Karachi"); // Calls Guest internally
+        System.out.println("Is Available After Guest: " + room101.isAvailable());
+        room101.setReserved(false); // Testing setter
 
-            // 4. Output values to remove "Unused Variable" Warnings
-          System.out.println("Hotel: " + continental.getName());
-            System.out.println("Room: " + room101.getNumber() + " | Available: " + room101.isAvailable());
-            System.out.println("Type: " + familyType.getKind() + " | Price: " + familyType.getCost());
-            System.out.println("Guest: " + mario.getName() + " | ID: " + mario.getId() + " | Address: " + mario.getAddressDetails());
-            System.out.println("Payment: " + mario.getCreditCardDetails());
+        System.out.println("\n--- 3. Testing Hotel Class ---");
+        Hotel myHotel = new Hotel("Serena");
+        myHotel.addRoom(room101);
+        System.out.println("Hotel Name: " + myHotel.getName());
+        System.out.println("Availability Check: " + myHotel.available(suite));
 
-            // 5. Execution Flow (Fig 15, 16)
-            System.out.println("\n--- Processing Reservation #379 ---");
-            chain.makeReservation("The Continental", 379, "2025-12-25", "2025-12-30", mario);
+        System.out.println("\n--- 4. Testing ReserverPayer (Inheritance) ---");
+        ReserverPayer rp = new ReserverPayer("RP-01", "Zain", "Lahore", "5555-4444");
+        System.out.println("ID: " + rp.getId() + ", Card: " + rp.getCreditCardDetails());
+        rp.create("Zain Khan", "Lahore, PK"); // Testing overridden method
 
-            // 6. Association Class usage (Table 10 - HowMany)
-            Reservation resObj = new Reservation(379, "2025-12-20", "2025-12-25", "2025-12-30", mario);
-            HowMany howManyDetails = new HowMany(2, resObj, familyType);
-            
-            System.out.println("Reservation Confirmation: " + resObj.getNumber());
-            System.out.println("Rooms Quantity: " + howManyDetails.getRoomCount());
+        System.out.println("\n--- 5. Testing HotelChain (Controller) ---");
+        HotelChain chain = new HotelChain();
+        chain.addHotel(myHotel);
+        chain.createReserverPayer("RP-02", "Sara", "ISB", "1111-2222");
+        // Calling makeReservation (Throws exception if hotel not found)
+        chain.makeReservation("Serena", 1001, "2026-05-01", "2026-05-10", rp);
+        
+        chain.checkInGuest("RP-02");
+        chain.cancelReservation(1001);
+        chain.checkOutGuest("RP-02");
 
-            // 7. Room State Check (Fig 19)
-            room101.setReserved(true);
-            System.out.println("Room 101 Status: " + (room101.isAvailable() ? "Available" : "Reserved"));
+        System.out.println("\n--- 6. Testing Reservation Class ---");
+        Reservation res = new Reservation(2002, "2026-01-09", "2026-06-01", "2026-06-05", rp);
+        res.create();
+        System.out.println("Res Number: " + res.getNumber());
+        System.out.println("Res Dates: " + res.getDates());
+        System.out.println("Res Payer: " + res.getPayer().getName());
 
-            System.out.println("Debug Info: " + resObj.getDates() + " reserved by " + resObj.getPayer().getName());
-            System.out.println("HowMany Details: For " + howManyDetails.getRoomType().getKind());
+        System.out.println("\n--- 7. Testing HowMany (Association Class) ---");
+        HowMany linkage = new HowMany(2, res, suite);
+        System.out.println("Rooms Count: " + linkage.getRoomCount());
+        System.out.println("Linked Type: " + linkage.getRoomType().getKind());
 
-            System.out.println("\n=== SYSTEM VERIFIED: NO ERRORS OR WARNINGS ===");
+        System.out.println("\n=======================================================\n");
+        System.out.println("ALL METHODS AND ATTRIBUTES TESTED SUCCESSFULLY\n");
+        System.out.println("========================================================");
 
-        } catch (HotelSystemException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
     }
 }
