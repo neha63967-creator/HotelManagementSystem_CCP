@@ -10,19 +10,16 @@ public class Hotel {
         this.name = name;
     }
 
-    public Reservation createReservation(
-            int resNum,
-            String date,
-            String start,
-            String end,
-            ReserverPayer rp
-    ) {
-        Reservation res = new Reservation(resNum, date, start, end, rp);
-        res.create();
-        reservations.add(res);
-        System.out.println("Hotel " + name + " added Reservation #" + resNum);
-        return res;
+    public Reservation createReservation(int resNum, String date, String start, String end, ReserverPayer rp) {
+        if (resNum <= 0) resNum = (int)(Math.random()*10000);{
+            Reservation res = new Reservation(resNum, date, start, end, rp);
+            res.create();
+            reservations.add(res);
+            System.out.println("Hotel " + name + " added Reservation #" + resNum);
+            return res;
+        } 
     }
+    
 
     public boolean available(RoomType type) {
         for (Room r : rooms) {

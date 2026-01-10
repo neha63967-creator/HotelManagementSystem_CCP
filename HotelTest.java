@@ -19,7 +19,7 @@ public class HotelTest {
     }
 
     @Test
-    public void testAvailability_WithRooms() {
+    public void testAvailability_WithRooms() throws HotelSystemException {
         Hotel hotel = new Hotel("Marriott");
         Room r = new Room(101);
         hotel.addRoom(r);

@@ -5,7 +5,7 @@ public class Room {
     private Guest occupant; 
 
     public Room(int number) {
-        this.number = number;
+        this.number = (number <= 0) ? 999 : number; 
     }
 
     public void createGuest(String id, String name, String address) {

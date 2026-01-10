@@ -13,13 +13,20 @@ public class HotelChain {
             ReserverPayer rp
     ) throws Exception {
 
-        if (canMakeReservation()) {
-            Hotel hotel = hotels.get(hotelName);
-            if (hotel == null)
-                throw new Exception("Hotel not found!");
-
-            hotel.createReservation(resNum, "2026-01-07", start, end, rp);
+        // Defensive: Check for null or empty inputs
+        if (hotelName == null || hotelName.trim().isEmpty()) {
+            throw new HotelSystemException("Hotel name cannot be empty.");
         }
+        if (rp == null) {
+            throw new HotelSystemException("Reserver details are required.");
+        }
+
+        Hotel hotel = hotels.get(hotelName);
+        if (hotel == null) {
+            throw new HotelSystemException("Hotel '" + hotelName + "' not found in our chain.");
+        }
+
+        hotel.createReservation(resNum, "2026-01-10", start, end, rp);
     }
 
     public void cancelReservation(int resNum) {
@@ -31,9 +38,11 @@ public class HotelChain {
     }
 
     public void checkInGuest(String id) {
-        if (canCheckInGuest()) {
-            System.out.println("Checking in Guest with ID: " + id);
+        if (id == null) {
+            System.out.println("Error: Invalid ID provided.");
+            return;
         }
+        System.out.println("Checking in Guest with ID: " + id);
     }
 
     public void checkOutGuest(String id) {
@@ -69,7 +78,8 @@ public class HotelChain {
         return true;
     }
 
-    public void addHotel(Hotel h) {
+    public void addHotel(Hotel h) throws HotelSystemException {
+        if (h == null) throw new HotelSystemException("Cannot add a null hotel.");
         hotels.put(h.getName(), h);
     }
 }
