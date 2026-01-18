@@ -1,38 +1,22 @@
 public class HowMany {
-
-    private int number;
+    private int number; // UML: number : Integer
     private Reservation reservation;
     private RoomType roomType;
 
-    public HowMany(
-            int number,
-            Reservation reservation,
-            RoomType roomType
-    ) {
+    public HowMany(int number, Reservation reservation, RoomType roomType) {
         this.number = number;
         this.reservation = reservation;
         this.roomType = roomType;
-
-        
-        displayDetails();
     }
 
-    private void displayDetails() {
-        
+    public void displayDetails() {
         if (roomType != null && reservation != null) {
-            System.out.println(
-                "HowMany: " + number +
-                " rooms of type " + roomType.getKind() +
-                " linked to Reservation #" + reservation.getNumber()
-            );
+            System.out.println("HowMany: " + number + 
+                " rooms of type [" + roomType.getKind().getType() + 
+                "] for Reservation #" + reservation.getNumber());
         }
     }
 
-    public int getRoomCount() {
-        return number;
-    }
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
+    public int getNumber() { return number; }
+    public RoomType getRoomType() { return roomType; }
 }

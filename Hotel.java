@@ -2,39 +2,44 @@ import java.util.*;
 
 public class Hotel {
 
-    private String name;
-    private List<Room> rooms = new ArrayList<>();
-    private List<Reservation> reservations = new ArrayList<>();
+    private Name name;
+    private List<Room> rooms = new ArrayList<>(); 
+    private List<RoomType> roomTypes = new ArrayList<>(); 
+    private Reservation reservation; 
 
-    public Hotel(String name) {
+    public Hotel(Name name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Hotel name cannot be null");
+        }
         this.name = name;
     }
 
-    public Reservation createReservation(int resNum, String date, String start, String end, ReserverPayer rp) {
-        if (resNum <= 0) resNum = (int)(Math.random()*10000);{
-            Reservation res = new Reservation(resNum, date, start, end, rp);
-            res.create();
-            reservations.add(res);
-            System.out.println("Hotel " + name + " added Reservation #" + resNum);
-            return res;
-        } 
+    public void createReservation() {
+        System.out.println("New reservation process started for " + name.toString());
     }
-    
 
-    public boolean available(RoomType type) {
+    public boolean available() {
+        if (rooms.isEmpty()) {
+            System.out.println("No rooms available in this hotel.");
+            return false;
+        }
         for (Room r : rooms) {
-            if (r.isAvailable()) {
+            if (r.getOccupant() == null) { 
                 return true;
             }
         }
         return false;
     }
 
-    public String getName() {
-        return name;
+    public void addRoom(Room r) {
+        if (r != null) rooms.add(r);
     }
 
-    public void addRoom(Room r) {
-        rooms.add(r);
+    public void addRoomType(RoomType rt) {
+        if (rt != null) roomTypes.add(rt);
+    }
+
+    public Name getName() {
+        return name;
     }
 }

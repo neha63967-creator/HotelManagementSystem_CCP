@@ -1,28 +1,48 @@
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import java.util.Date;
+import java.util.Calendar;
 
 public class ReservationTest {
-    @Test
-    public void testReservationCreation() {
-        // Arrange
-        ReserverPayer rp = new ReserverPayer("1", "Ali", "KHI", "123");
-        Reservation res = new Reservation(555, "2026-01-08", "2026-01-10", "2026-01-15", rp);
-        
-        // Act & Assert
-        assertEquals(555, res.getNumber());
-        assertEquals("2026-01-10 to 2026-01-15", res.getDates());
-        assertEquals(rp, res.getPayer());
+    
+    private Date createDate(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day);
+        return cal.getTime();
     }
 
     @Test
-    public void testReservationDetails() {
+    public void testReservationCreation() {
         // Arrange
-        ReserverPayer rp = new ReserverPayer("ID-1", "Zain", "ISB", "5555");
-        Reservation res = new Reservation(99, "2026-01-01", "2026-01-05", "2026-01-10", rp);
+        Name name = new Name("Ali", "Khan");
+        // FIX: Address sirf 2 Strings leta hai aapki class ke mutabiq
+        Address addr = new Address("Khi", "Street 1"); 
+        Identity id = new Identity("1");
+        CreditCard card = new CreditCard("1234-5678");
+        
+        ReserverPayer rp = new ReserverPayer(id, name, addr, card);
+        
+        Date resDate = new Date();
+        Date start = createDate(2026, 0, 10);
+        Date end = createDate(2026, 0, 15);
 
-        // Act & Assert
-        assertEquals("2026-01-05 to 2026-01-10", res.getDates());
-        assertEquals(rp, res.getPayer());
-        assertEquals(99, res.getNumber());
+        // Act
+        Reservation res = new Reservation(555, resDate, start, end, rp);
+        
+        // Assert
+        assertEquals(555, res.getNumber());
+        assertEquals(rp, res.getPayer()); 
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidDates_ShouldThrowException() {
+        Name name = new Name("Zain", "Ahmed");
+        Address addr = new Address("LHR", "Street A");
+        ReserverPayer rp = new ReserverPayer(new Identity("ID-1"), name, addr, new CreditCard("0000000000001234"));
+        
+        Date start = createDate(2026, 0, 15);
+        Date end = createDate(2026, 0, 10); 
+
+        new Reservation(99, new Date(), start, end, rp);
     }
 }

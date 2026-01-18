@@ -4,12 +4,20 @@ import org.junit.Test;
 public class RoomTypeTest {
     
     @Test
-    public void testRoomTypeConstructor_ShouldStoreValues() throws Exception { // Added 'throws Exception'
-        // Arrange & Act
-        RoomType type = new RoomType("Deluxe", 500.0);
+    public void testRoomAndRoomTypeConnection() throws Exception {
+        // 1. Arrange: Objects taiyar karein
+        RoomKind deluxe = new RoomKind("Deluxe");
+        Money price = new Money(5000);
+        RoomType type = new RoomType(deluxe, price);
+
+        // 2. Act: Room banayein aur type assign karein
+        // UML ke mutabiq Room aur RoomType ka 1-to-1 connection hai
+        Room room = new Room(101, type);
+
+        // 3. Assert: Verify karein ke data sahi store hua
+        assertEquals("Deluxe", room.getType().getKind().getType());
         
-        // Assert
-        assertEquals("Deluxe", type.getKind());
-        assertEquals(500.0, type.getCost(), 0.01);
+        // Money object se amount nikal kar compare karein
+        assertEquals(5000.0, room.getType().getCost().getAmount(), 0.01);
     }
 }

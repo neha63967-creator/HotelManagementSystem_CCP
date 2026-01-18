@@ -1,5 +1,4 @@
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 public class GuestTest {
@@ -7,12 +6,14 @@ public class GuestTest {
     public void testCreateGuest_ShouldSetDetails() {
         // Arrange
         Guest guest = new Guest();
-        // Act
-        guest.create("Ali Khan", "Karachi, Pakistan");
-        // Assert
-        assertEquals("Ali Khan", guest.getName());
-        assertEquals("Karachi, Pakistan", guest.getAddressDetails());
-    }
+        Name guestName = new Name("Ali", "Khan"); // Objects banaye
+        Address guestAddr = new Address("Karachi", "Pakistan");
 
-    
+        // Act
+        guest.create(guestName, guestAddr); // Objects pass kiye
+
+        // Assert
+        assertEquals("Ali Khan", guest.getName().toString());
+        assertEquals("Pakistan, Karachi", guest.getAddressDetails().toString());
+    }
 }

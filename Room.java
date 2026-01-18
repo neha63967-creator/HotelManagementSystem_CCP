@@ -1,17 +1,17 @@
 public class Room {
 
     private int number;
-    private boolean isReserved = false;
     private Guest occupant; 
+    private RoomType type;
 
-    public Room(int number) {
+    public Room(int number, RoomType type) { 
         this.number = (number <= 0) ? 999 : number; 
+        this.type = type; // Ab ye sahi assign hoga
     }
 
-    public void createGuest(String id, String name, String address) {
+    public void createGuest( Name name, Address address) {
         this.occupant = new Guest();
         this.occupant.create(name, address);
-        this.isReserved = true;
         System.out.println(
             "Room " + number + " is now occupied by " + name
         );
@@ -21,11 +21,17 @@ public class Room {
         return number;
     }
 
-    public boolean isAvailable() {
-        return !isReserved;
+     public Guest getOccupant() {
+        return occupant;
+    }
+    
+    public RoomType getType() {
+         return type;
+     }
+
+   public boolean isAvailable() {
+        return occupant == null;
     }
 
-    public void setReserved(boolean status) {
-        this.isReserved = status;
-    }
+   
 }
